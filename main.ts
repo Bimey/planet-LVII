@@ -80,11 +80,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Pickup, function (sprite, otherS
                 `)
             sprites.destroy(otherSprite, effects.confetti, 500)
             claimed2 = 1
-            game.splash("claimed!")
         }
-        game.splash("overlapped with itemstand!")
+    } else if (otherSprite == Guantlet_of_vines) {
+        game.splash("The guantlet of Vines has granted", "you immunity to vines")
+        sprites.destroy(otherSprite, effects.confetti, 500)
+        VineImmunity = 1
     }
-    game.splash("overlapped!")
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Ghost, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
@@ -284,7 +285,9 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava0, function (sp
     info.changeLifeBy(-1)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, location) {
-    info.changeLifeBy(-1)
+    if (!(VineImmunity == 1)) {
+        info.changeLifeBy(-1)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.castle.saplingPine, function (sprite, location) {
     Area = 1
@@ -299,7 +302,9 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     facingRight = 0
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, location) {
-    info.changeLifeBy(-1)
+    if (!(VineImmunity == 1)) {
+        info.changeLifeBy(-1)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile18`, function (sprite, location) {
     volcanoEntrance = 1
@@ -323,6 +328,10 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
     info.setLife(maxHeath)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile50`, function (sprite, location) {
+    Area = 4
+    volcanoEntrance = 2
+})
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava1, function (sprite, location) {
     info.changeLifeBy(-1)
 })
@@ -338,8 +347,15 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.UndyingEnemy, function (sprite, 
     sprites.destroy(otherSprite, effects.spray, 500)
     info.changeLifeBy(-1)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile52`, function (sprite, location) {
+    if (!(VineImmunity == 1)) {
+        info.changeLifeBy(-1)
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile5`, function (sprite, location) {
-    info.changeLifeBy(-1)
+    if (!(VineImmunity == 1)) {
+        info.changeLifeBy(-1)
+    }
 })
 info.onLifeZero(function () {
     if (Checkpoint == 0) {
@@ -474,6 +490,9 @@ info.onLifeZero(function () {
     } else if (Checkpoint == 1) {
         Area = 1
         forestEntrance = 4
+        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+        sprites.destroyAllSpritesOfKind(SpriteKind.UndyingEnemy)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Ghost)
         info.setLife(maxHeath)
     } else if (Checkpoint == 2) {
         tiles.setCurrentTilemap(tilemap`level6`)
@@ -524,11 +543,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let Ghost2: Sprite = null
 let Ghost1: Sprite = null
+let helloThere = 0
 let TreeMonsters: Sprite = null
 let Blazers: Sprite = null
 let projectile: Sprite = null
 let myDart: Dart = null
 let toolbar: Inventory.Toolbar = null
+let Guantlet_of_vines: Sprite = null
 let itemStand: Sprite = null
 let hauntingGhost: Sprite = null
 let ghostEntrance = 0
@@ -536,6 +557,7 @@ let volcanoEntrance = 0
 let forestEntrance = 0
 let SiteEntrance = 0
 let beingHuanted = 0
+let VineImmunity = 0
 let claimed2 = 0
 let claimed1 = 0
 let blaster = 0
@@ -608,6 +630,7 @@ darts2 = 1
 blaster = 0
 claimed1 = 0
 claimed2 = 0
+VineImmunity = 0
 beingHuanted = 0
 SiteEntrance = 0
 forestEntrance = 0
@@ -1033,15 +1056,24 @@ forever(function () {
             tiles.placeOnTile(mySprite, tiles.getTileLocation(59, 35))
         } else if (forestEntrance == 3) {
             tiles.placeOnTile(mySprite, tiles.getTileLocation(29, 50))
+        } else if (forestEntrance == 4) {
+            tiles.placeOnTile(mySprite, tiles.getTileLocation(22, 51))
+            helloThere = 1
+        }
+        if (helloThere == 1) {
             tiles.setTileAt(tiles.getTileLocation(26, 48), assets.tile`transparency16`)
             tiles.setTileAt(tiles.getTileLocation(26, 49), assets.tile`transparency16`)
             tiles.setTileAt(tiles.getTileLocation(26, 50), assets.tile`transparency16`)
-            if (Checkpoint == 2) {
-                tiles.setTileAt(tiles.getTileLocation(22, 51), assets.tile`myTile47`)
-            }
-        } else if (forestEntrance == 4) {
-            tiles.placeOnTile(mySprite, tiles.getTileLocation(22, 51))
+            tiles.setTileAt(tiles.getTileLocation(26, 51), assets.tile`transparency16`)
+            tiles.setTileAt(tiles.getTileLocation(27, 49), assets.tile`transparency16`)
+            tiles.setTileAt(tiles.getTileLocation(27, 50), assets.tile`transparency16`)
+            tiles.setWallAt(tiles.getTileLocation(27, 49), false)
+            tiles.setWallAt(tiles.getTileLocation(27, 50), false)
         }
+        if (Checkpoint == 2) {
+            tiles.setTileAt(tiles.getTileLocation(22, 51), assets.tile`myTile47`)
+        }
+        sprites.destroyAllSpritesOfKind(SpriteKind.Pickup)
         game.splash("Area 1", "The Endless Forest")
         Area += 0.5
     } else if (Area == 2) {
@@ -1049,6 +1081,24 @@ forever(function () {
         tiles.placeOnTile(mySprite, tiles.getTileLocation(52, 20))
         game.splash("Area 2", "The Swamp")
         Area += 0.5
+        Guantlet_of_vines = sprites.create(img`
+            .....................
+            ...bbbbbbbbbbbbb.....
+            ..bbbbbbbb7777bbb....
+            .bbbbbbbbb7bbbbbbb...
+            .bb77777777777bbbb...
+            .bb777777777bbbbbb...
+            .bb777777f7777bbbb...
+            .bb77777fff7bbbbbb...
+            .bb777777f7777bbbb...
+            .bb777777777bbbbbb...
+            .bb77777777777bbbb...
+            .bbbbbbbbbbbbbbbbb...
+            ..bbbbbbbbbbbbbbb....
+            ...bbbbbbbbbbbbb.....
+            .....................
+            `, SpriteKind.Pickup)
+        tiles.placeOnTile(Guantlet_of_vines, tiles.getTileLocation(1, 20))
     } else if (Area == 3) {
         tiles.setCurrentTilemap(tilemap`level4`)
         tiles.placeOnTile(mySprite, tiles.getTileLocation(2, 17))
@@ -1189,14 +1239,14 @@ forever(function () {
             tiles.setTileAt(tiles.getTileLocation(24, 30), assets.tile`transparency16`)
             tiles.setTileAt(tiles.getTileLocation(24, 31), assets.tile`transparency16`)
             tiles.setTileAt(tiles.getTileLocation(24, 32), assets.tile`transparency16`)
-            sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
-            sprites.destroyAllSpritesOfKind(SpriteKind.UndyingEnemy)
-            sprites.destroyAllSpritesOfKind(SpriteKind.Ghost)
+        } else if (volcanoEntrance == 2) {
+            tiles.placeOnRandomTile(mySprite, assets.tile`myTile51`)
         }
         game.splash("Area 4", "Inside The Volcano")
         sprites.destroyAllSpritesOfKind(SpriteKind.Enemy, effects.none, 500)
         sprites.destroyAllSpritesOfKind(SpriteKind.UndyingEnemy, effects.none, 500)
         sprites.destroyAllSpritesOfKind(SpriteKind.Ghost, effects.none, 500)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Pickup)
         if (claimed2 == 0) {
             itemStand = sprites.create(img`
                 .....................
@@ -1343,7 +1393,7 @@ forever(function () {
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             `)
         if (ghostEntrance == 0) {
-            tiles.placeOnTile(mySprite, tiles.getTileLocation(30, 1))
+            tiles.placeOnTile(mySprite, tiles.getTileLocation(29, 2))
         } else if (ghostEntrance == 1) {
             tiles.placeOnTile(mySprite, tiles.getTileLocation(32, 3))
         }
