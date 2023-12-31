@@ -82,7 +82,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Pickup, function (sprite, otherS
             claimed2 = 1
         }
     } else if (otherSprite == Guantlet_of_vines) {
-        game.splash("The guantlet of Vines has granted", "you immunity to vines")
+        game.splash("The Gauntlet of Vines has ", "given you immunity to vines")
         sprites.destroy(otherSprite, effects.confetti, 500)
         VineImmunity = 1
     }
@@ -166,6 +166,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile15`, function (sprite, 
         game.splash("You're Max Heath has", "been increased to")
         game.splash(maxHeath)
         claimed1 = 1
+    }
+    if (Checkpoint != 2) {
+        tiles.setTileAt(tiles.getTileLocation(7, 12), assets.tile`myTile48`)
+    } else if (Checkpoint == 2) {
+        tiles.setTileAt(tiles.getTileLocation(7, 12), assets.tile`myTile23`)
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile22`, function (sprite, location) {
@@ -518,6 +523,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile41`, function (sprite, 
     Area = 5
     ghostEntrance = 1
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile53`, function (sprite, location) {
+    info.changeLifeBy(0 - maxHeath)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile48`, function (sprite, location) {
     Checkpoint = 2
     tiles.setTileAt(tiles.getTileLocation(7, 12), assets.tile`myTile23`)
@@ -543,7 +551,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let Ghost2: Sprite = null
 let Ghost1: Sprite = null
-let helloThere = 0
 let TreeMonsters: Sprite = null
 let Blazers: Sprite = null
 let projectile: Sprite = null
@@ -630,6 +637,7 @@ darts2 = 1
 blaster = 0
 claimed1 = 0
 claimed2 = 0
+let helloThere = 0
 VineImmunity = 0
 beingHuanted = 0
 SiteEntrance = 0
@@ -1056,9 +1064,9 @@ forever(function () {
             tiles.placeOnTile(mySprite, tiles.getTileLocation(59, 35))
         } else if (forestEntrance == 3) {
             tiles.placeOnTile(mySprite, tiles.getTileLocation(29, 50))
+            helloThere = 1
         } else if (forestEntrance == 4) {
             tiles.placeOnTile(mySprite, tiles.getTileLocation(22, 51))
-            helloThere = 1
         }
         if (helloThere == 1) {
             tiles.setTileAt(tiles.getTileLocation(26, 48), assets.tile`transparency16`)
@@ -1070,8 +1078,10 @@ forever(function () {
             tiles.setWallAt(tiles.getTileLocation(27, 49), false)
             tiles.setWallAt(tiles.getTileLocation(27, 50), false)
         }
-        if (Checkpoint == 2) {
+        if (Checkpoint != 1) {
             tiles.setTileAt(tiles.getTileLocation(22, 51), assets.tile`myTile47`)
+        } else if (Checkpoint == 1) {
+            tiles.setTileAt(tiles.getTileLocation(22, 51), assets.tile`myTile42`)
         }
         sprites.destroyAllSpritesOfKind(SpriteKind.Pickup)
         game.splash("Area 1", "The Endless Forest")
