@@ -370,6 +370,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile21`, function (sprite, 
     Area = 5
     ghostEntrance = 0
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile54`, function (sprite, location) {
+    info.changeLifeBy(0 - maxHeath)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile49`, function (sprite, location) {
     info.changeLifeBy(0 - maxHeath)
 })
@@ -1138,6 +1141,14 @@ forever(function () {
             tiles.setTileAt(tiles.getTileLocation(27, 50), assets.tile`transparency16`)
             tiles.setWallAt(tiles.getTileLocation(27, 49), false)
             tiles.setWallAt(tiles.getTileLocation(27, 50), false)
+            tiles.setTileAt(tiles.getTileLocation(30, 48), assets.tile`transparency16`)
+            tiles.setTileAt(tiles.getTileLocation(30, 49), assets.tile`transparency16`)
+            tiles.setTileAt(tiles.getTileLocation(30, 50), assets.tile`transparency16`)
+            tiles.setTileAt(tiles.getTileLocation(30, 51), assets.tile`transparency16`)
+            tiles.setTileAt(tiles.getTileLocation(29, 49), assets.tile`transparency16`)
+            tiles.setTileAt(tiles.getTileLocation(29, 50), assets.tile`transparency16`)
+            tiles.setWallAt(tiles.getTileLocation(29, 49), false)
+            tiles.setWallAt(tiles.getTileLocation(29, 50), false)
         }
         if (Checkpoint != 1) {
             tiles.setTileAt(tiles.getTileLocation(22, 51), assets.tile`myTile47`)
